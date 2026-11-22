@@ -115,7 +115,7 @@ export function resolveClash(state, playerCard, wardenCard) {
   if (pAdv) {
     winner = 'player';
     damage = Math.max(1, Math.abs(p.power - w.power));
-    text = `Flame answers ${wardenCard.element} — element advantage wins`;
+    text = `${elementName(playerCard.element)} answers ${wardenCard.element} — element advantage wins`;
   } else if (wAdv) {
     winner = 'warden';
     damage = Math.max(1, Math.abs(p.power - w.power));
