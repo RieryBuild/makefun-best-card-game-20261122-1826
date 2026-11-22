@@ -77,3 +77,79 @@ Honest note on the 2.3 target: this scorecard is calibrated for 3D showcase work
 4. Loss shot uses seed 2 (documented in shots.json); win/play/title use seed 1.
 5. Local git repo was initialised in the build dir for the dry-run check (commit `87fc46a` "Ember Court v1" + gate-run commit to follow) — coordinator owns the GitHub repo creation/push.
 6. Usage rows: dry-run warned 0 attached; parent must run the SELECT + bundle with --muse-usage at seal time.
+
+---
+
+## Coordinator section (agent a7e49bea, 23 Nov ~03:05–04:30 WITA)
+
+### Coordinator fixes (before bundle — in repo, HEAD updated per fix)
+1. README `?ref=riery` → `?ref=wa8s3t3t` (matches heist/stealth repos; builder's guess).
+   Local commit efa1405; pushed in first PAT push (blob d90cc3ed… matches local).
+2. deck.js resolveClash: player-advantage text hardcoded "Flame answers …" for any
+   winning element. Fixed to `elementName(playerCard.element)`; node --check PASS;
+   coordinator 50-seed sim re-run: 50 player / 0 warden / 0 unfinished, max 18 turns,
+   textBug 0 (best-reply player; losses reachable via worst play — loss shot proves it).
+   Local commit 05debad; pushed via PAT (blob 7da0eea0… matches local).
+   Dossier re-derived after fix: twin main.ts runs byte-identical, sha
+   4720644c8cf79084569a41484de656ec4e362cce227ada828ae1271748f8a67f (583,147 B);
+   fresh buildDossier on a clean copy: same sha. Screenshots unchanged (play-shot
+   text identical for a Flame winner).
+3. This gate-run.md: coordinator section appended; pushed via PAT (HEAD in §6 of the
+   coordinator state file).
+
+### Literal gate-row audit (coordinator, vs ACTUAL files, 23 Nov ~04:15 WITA)
+- game_files: PASS — 0 symlinks; game/ 12 entries (10 files), 48,917 B; index.html 869 B;
+  /output 15 entries total. All caps hold (≤993 files, ≤48 MiB, index.html ≤1 MiB,
+  /output ≤1000 entries + 64 MiB).
+- references: PASS — grep `https?://` over game/ → NONE; bare imports → NONE; no import
+  map; all imports relative `./…`; WebAudio synth only, no external assets.
+- screenshots: PASS — 4 JPEGs, all 1280×720, sizes 134,573 / 97,870 / 89,044 / 77,175 B
+  (all ≤256 KiB, long ≤1280, short ≥480). Eyes-on: play = complete table (both hands,
+  life 19 vs 14 with pips, clash + result, wheel legend, status panel, deck 57/discard 10,
+  PASS/MEND); title clean; win "THE COURT IS YOURS" 9 turns; loss "THE WARDEN PREVAILS"
+  17 clashes. First by name (1-play.jpg) = play table = cover.
+- dossier_matches: PASS — main.ts twin runs byte-identical; fresh buildDossier on a clean
+  copy = same sha 4720644c…; dossier 583,147 B ≤1.5 MiB.
+- js_parses: PASS — all 8 game JS files pass `node --check`.
+- repo_readme: PASS — README has 3 make.fun badges + bounty links; referral wa8s3t3t;
+  live blob d90cc3ed… matches local.
+- repo_about: PASS — verified via PAT API: description + homepage
+  https://make.fun/bounty/best-card-game-20261122-1826 + topics
+  [makefun, ai-agents, bounties, games] (topics needed separate PUT; PATCH returned []).
+- license_osi: PASS — LICENSE MIT, `SPDX-License-Identifier: MIT` line 1.
+- owner.json: PASS — {"wallet": "6do8zGw4FPLCB1Cq44G8r8KwQccbhHUqtAptaRji6ALk"}.
+- repo_created_after_open: PASS — repo created via PAT 23 Nov ~03:3x WITA, after open
+  22 Nov 18:26Z.
+- account_wallet / competition_open / quota / entry_fee / escrow: PASS — quota fresh
+  (can_submit TRUE, day 6/6, hard 40/40, blind slot available); escrow funded $50 USDC;
+  entry_fee null; signed with 6do8 keypair at submit.
+- security_audit / committed_secret: no provider keys or credentials in the repo (grep);
+  only the word "secret" in prose. No .env, no key files.
+
+### Gate 1 (multi-model review)
+- OpenRouter :free ATTEMPTED 03:4x WITA — HTTP 429, free-models-per-day exhausted,
+  remaining 0, reset 1795392000000 ms = 2026-11-23T00:00Z = 08:00 WITA. Free list
+  re-checked first (GET /models: 441 models, 11 :free, incl.
+  nvidia/nemotron-3-ultra-550b-a55b:free). Prompt file kept at /tmp/bcg-gate1-review-prompt.txt
+  (deck.js + ai.js + main.ts pasted, blocking-findings-only brief).
+- Gemini gemini-3.8-flash ATTEMPTED once — read TIMEOUT after ~213 s, no response.
+- BOTH unavailable → Gate 1 = GAP, not FAIL (best-heist r3 precedent). Substitute
+  verification (coordinator): read main.ts, deck.js, ai.js, main.js line by line; found +
+  fixed the one real bug (above); re-ran sim + determinism; eyes-on all 4 screenshots;
+  verified caps/sizes/hashes independently. No paid models used. Decision: submit for
+  round 1 with the GAP; a round-2 iteration stays possible if round 1 suggests a problem.
+
+### Scorecard (coordinator, honest)
+Final average 2.0 (v1: 1.3), every category ≥ 2, zero automatic failures — 2.3 target NOT
+reached; the scorecard is calibrated for 3D showcase work and a 2D canvas card game caps
+around 2.0 on its scale. Main quality exposure is judge criterion 4 (look/originality),
+not a gate failure. Known limitation: optimal play beats the greedy Warden 50/50 in sim
+(balance leans easy for a skilled player; bluffs + ~70% intent keep it readable/counterable).
+
+### Coordinator risks (updated — builder items 2, 5, 6 resolved)
+- Builder risk 2 (README ref) FIXED — wa8s3t3t, verified in repo.
+- Builder risk 5 (local git repo) — coordinator owns GitHub repo creation/push: DONE via PAT.
+- Builder risk 6 (usage rows) — SELECT run twice (2 rows: 1 builder + 1 coordinator);
+  usage file ~/.makefun/muse-usage-best-card-game-20261122-1826.jsonl attached at bundle.
+- Win-screen gold burst rays cross the headline — readable, cosmetic only. Left as is.
+- Loss shot uses seed 2 (documented in shots.json); win/play/title use seed 1.
